@@ -96,8 +96,10 @@ class player:
         return f'Player {self.name} has {len(self.allCards)} cards.'
     # def hit(self):
     #     return 
-
-    
+def card_Check():
+    while len(new_deck.allCards) == 0:
+        print("Not Enough Cards")
+        break
 
 #GAME LOGIC
 game_on = True
@@ -105,8 +107,7 @@ new_deck = Deck()
 new_deck.shuffle()
 while game_on:
 
-
-    if len(new_deck.allCards) < 3:
+    if len(new_deck.allCards) < 4:
         print("Out of Cards")
         play_again = input("Press y to play again?: ")
         if play_again == "y" or play_again ==  "Y":
@@ -119,6 +120,7 @@ while game_on:
     Player_1 = player("Player")
 
 #Deal 2 cards to Player and Dealer
+    card_Check()
     for x in range(2):
         Dealer_1.add_cards(new_deck.deal_one())
         Player_1.add_cards(new_deck.deal_one())
@@ -141,7 +143,8 @@ while game_on:
         if user_Choice == "s" or user_Choice == "S":
             print("Dealer shows:", dealer_hand[0].value + dealer_hand[1].value)
             print(f"{Player_1.name} shows:", player_hand[0].value + player_hand[1].value)
-            if dealer_hand[0].value + dealer_hand[1].value < 17 and dealer_hand[0].value + dealer_hand[1].value <22:
+            if dealer_hand[0].value + dealer_hand[1].value < 17 and dealer_hand[0].value + dealer_hand[1].value < 22:
+                card_Check()
                 Dealer_1.add_cards(new_deck.deal_one())
                 dealer_hand.append(Dealer_1.remove_one())          
                 print(f"{Dealer_1.name} shows:", dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value)
@@ -151,18 +154,20 @@ while game_on:
                         print("Player WINS")
                 if player_hand[0].value + player_hand[1].value < dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value < 22 and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value >= 17:
                         print("Dealer Wins")
+                if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value == player_hand[0].value + player_hand[1].value:
+                    print("Tie - No Winner")
                 if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value < 17 and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value < 21:
                     Dealer_1.add_cards(new_deck.deal_one())
                     dealer_hand.append(Dealer_1.remove_one())
                     print(f"{Dealer_1.name} shows:", dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value)
-                    print()
                     if player_hand[0].value + player_hand[1].value > dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value:
                         print("Player WINS")
-                    if player_hand[0].value + player_hand[1].value < dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value < 21:
+                    if player_hand[0].value + player_hand[1].value < dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value < 22:
                         print("Dealer Wins")
                     if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value > 21:
                         print("DEALER BUST PLAYER WINS")
-
+                    if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value == player_hand[0].value + player_hand[1].value:
+                        print("Tie Game - No Winner")
             elif player_hand[0].value + player_hand[1].value > dealer_hand[0].value + dealer_hand[1].value:
                 print(f"{Player_1.name} WINS")
             elif player_hand[0].value + player_hand[1].value < dealer_hand[0].value + dealer_hand[1].value:
@@ -170,44 +175,105 @@ while game_on:
             else:
                 print("TIE GAME NO WINNNER")
 #if user hits on initial cards dealt
-        if user_Choice == "h" or user_Choice == "H" and times_hit == 0:
-             times_hit+=1
+        if user_Choice == "h" or user_Choice == "H":
+             card_Check()
              Player_1.add_cards(new_deck.deal_one())
              player_hand.append(Player_1.remove_one())
              print("Player shows:", player_hand[0].value + player_hand[1].value + player_hand[2].value)
              if player_hand[0].value + player_hand[1].value + player_hand[2].value > 21:
                  print("BUST DEALER WINS")
-             elif player_hand[0].value + player_hand[1].value + player_hand[2].value < 21:
+             if player_hand[0].value + player_hand[1].value + player_hand[2].value < 22:
                  user_Choice = input("Press ""H"" to hit or ""S"" to stay: ")
                  if user_Choice == "s" or user_Choice == "S":
-                    print("Dealer shows:", dealer_hand[0].value + dealer_hand[1].value)
-                    print(f"{Player_1.name} shows:", player_hand[0].value + player_hand[1].value + player_hand[2].value)
+                    if dealer_hand[0].value + dealer_hand[1].value >= 17 and player_hand[0].value + player_hand[1].value + player_hand[2].value < 22:
+                        print("Dealer shows:", dealer_hand[0].value + dealer_hand[1].value)
+                        print(f"{Player_1.name} shows:", player_hand[0].value + player_hand[1].value + player_hand[2].value)
+                        if dealer_hand[0].value + dealer_hand[1].value > player_hand[0].value + player_hand[1].value + player_hand[2].value:
+                            print("Dealer Wins")
+                        if dealer_hand[0].value + dealer_hand[1].value < player_hand[0].value + player_hand[1].value + player_hand[2].value:
+                            print("Player Wins")
+                        if dealer_hand[0].value + dealer_hand[1].value == player_hand[0].value + player_hand[1].value + player_hand[2].value:
+                            print("Tie - No Winner")                    
                     if dealer_hand[0].value + dealer_hand[1].value < 17:
+                        card_Check()
                         Dealer_1.add_cards(new_deck.deal_one())
-                        dealer_hand.append(Player_1.remove_one())                      
+                        dealer_hand.append(Dealer_1.remove_one())
+                        print("Dealer shows:", dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value)
+                        if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value >= 22:
+                            print("Dealer Bust - Player Wins")
+                        if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value > player_hand[0].value + player_hand[1].value + player_hand[2].value and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value < 22:
+                            print("Dealer Wins")
+                        if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value < player_hand[0].value + player_hand[1].value + player_hand[2].value and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value >= 17:
+                            print("Player Wins")
+                        if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value == player_hand[0].value + player_hand[1].value + player_hand[2].value:
+                            print("Tie - No Winner")
+                        if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value < 17:
+                            card_Check()
+                            Dealer_1.add_cards(new_deck.deal_one())
+                            dealer_hand.append(Dealer_1.remove_one())
+                            print("Dealer shows:", dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value)
+                            if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value >= 22:
+                                print("Dealer Bust - Player Wins")
+                            if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value > player_hand[0].value + player_hand[1].value + player_hand[2].value and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value >= 17 and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value < 22:
+                                print("Dealer Wins")
+                            if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value < player_hand[0].value + player_hand[1].value + player_hand[2].value and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value >= 17:
+                                print("Player Wins")
+                            if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value == player_hand[0].value + player_hand[1].value + player_hand[2].value:
+                                print("Tie - No Winner")
+                            if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value < 17:
+                                print('***4 cards not over 17***')                            
                  if user_Choice == "h" or user_Choice == "H":
+                    card_Check()
                     Player_1.add_cards(new_deck.deal_one())
                     player_hand.append(Player_1.remove_one())
-        
-
-
-    # if player_hand[0].value + player_hand[1].value + player_hand[2].value <21:
-    #     user_Choice = input("Press ""H"" to hit or ""S"" to stay: ")
-    #     if user_Choice == 'h' or user_Choice == "h" and times_hit == 1:
-    #         times_hit+=1
-    #         Player_1.add_cards(new_deck.deal_one())
-    #         player_hand.append(Player_1.remove_one())
-    #         print("Player shows:", player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value)
-    #     else:
-    #         break
-             
+                    print("Player shows:", player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value)
+                    if player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value > 21:
+                        print("Bust - Dealer Wins")
+                    if player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value < 22:
+                        user_Choice = input("Press ""H"" to hit or ""S"" to stay: ")
+                        if user_Choice == "h" or user_Choice == "H":
+                            card_Check()
+                            Player_1.add_cards(new_deck.deal_one())
+                            player_hand.append(Player_1.remove_one())
+                            print("Player shows:", player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value + player_hand[4].value)
+                            if player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value + player_hand[4].value >= 22:
+                                print("Bust - Dealer Wins")
+                                # ADD MORE LOGIC HERE
+                        if user_Choice == "s" or user_Choice == "S":
+                            print("Dealer shows:", dealer_hand[0].value + dealer_hand[1].value)
+                            print(f"{Player_1.name} shows:", player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value)
+                            if dealer_hand[0].value + dealer_hand[1].value > player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value:
+                                print("Dealer Wins")
+                            if dealer_hand[0].value + dealer_hand[1].value < player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value and dealer_hand[0].value + dealer_hand[1].value >= 17:
+                                print("Player Wins")
+                            if dealer_hand[0].value + dealer_hand[1].value < 17:
+                                card_Check()
+                                Dealer_1.add_cards(new_deck.deal_one())
+                                dealer_hand.append(Dealer_1.remove_one())
+                                print("Dealer shows:", dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value)
+                                if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value >= 22:
+                                    print("Dealer Bust - Player Wins")
+                                if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value > player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value < 22:
+                                    print("Dealer Wins")
+                                if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value < player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value >= 17:
+                                    print("Player Wins")
+                                if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value == player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value:
+                                    print("Tie - No Winner")
+                                if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value < 17:
+                                    card_Check()
+                                    Dealer_1.add_cards(new_deck.deal_one())
+                                    dealer_hand.append(Dealer_1.remove_one())
+                                    print("Dealer shows:", dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value)
+                                    if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value >= 22:
+                                        print("Dealer Bust - Player Wins")
+                                    if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value > player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value < 22:
+                                        print("Dealer Wins")
+                                    if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value < player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value and dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value >= 17:
+                                        print("Player Wins")
+                                    if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value == player_hand[0].value + player_hand[1].value + player_hand[2].value + player_hand[3].value:
+                                        print("Tie - No Winner")
+                                    if dealer_hand[0].value + dealer_hand[1].value + dealer_hand[2].value + dealer_hand[3].value < 17:
+                                        print('jesus help me')                                
 
     if player_hand[0].value + player_hand[1].value == 21 and dealer_hand[0].value + dealer_hand[1].value < 21:
         print("Blackjack! Player wins")
-        
-
-
-
-"""la
-TESTING
-"""
